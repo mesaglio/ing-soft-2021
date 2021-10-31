@@ -4,6 +4,8 @@ plugins {
     id("com.diffplug.spotless") version "5.17.0"
     id("org.springframework.boot") version "2.5.5"
     id("org.seasar.doma.compile") version "1.1.0"
+    id("org.sonarqube") version "3.3"
+    id("jacoco")
 }
 
 apply(plugin = "io.spring.dependency-management")
@@ -11,6 +13,12 @@ apply(plugin = "io.spring.dependency-management")
 spotless {
     java {
         googleJavaFormat("1.7")
+    }
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "ing-soft-2021")
     }
 }
 
@@ -75,5 +83,17 @@ eclipse {
 tasks {
     test {
         useJUnitPlatform()
+        extensions.configure(JacocoTaskExtension::class) {
+            destinationFile = layout.buildDirectory.file("jacoco/jacocoTest.exec").get().asFile
+            classDumpDir = layout.buildDirectory.dir("jacoco/classpathdumps").get().asFile
+        }
+    }
+}
+
+tasks.jacocoTestReport {
+    reports {
+        xml.required.set(false)
+        csv.required.set(false)
+        html.outputLocation.set(layout.buildDirectory.dir("jacocoHtml"))
     }
 }
