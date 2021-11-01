@@ -19,9 +19,9 @@ node {
 
     stage('Analyze') {
       withSonarQubeEnv() {
-        sh "./gradlew sonarqube /
-          -Dsonar.host.url=http://localhost:9000 /
-          -Dsonar.login=admin /
+        sh "./gradlew sonarqube \
+          -Dsonar.host.url=http://sonarqube:9000 \
+          -Dsonar.login=admin \
           -Dsonar.password=ingsoft"
       }
     }
