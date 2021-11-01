@@ -13,6 +13,19 @@ node {
         sh './gradlew check'
     }
 
+    stage('Jacoco Test') {
+            sh './gradlew -i test jacocoTestReport'
+    }
+
+    stage('Analyze') {
+      withSonarQubeEnv() {
+        sh "./gradlew sonarqube \
+          -Dsonar.host.url=http://sonarqube:9000 \
+          -Dsonar.login=admin \
+          -Dsonar.password=ingsoft"
+      }
+    }
+
     stage('Deploy') {
         sh 'echo Deployando...'
         sh 'echo Deploy Exitoso!'
