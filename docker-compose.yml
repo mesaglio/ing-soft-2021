@@ -1,0 +1,12 @@
+version: "3.7"
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk11
+    ports:
+      - "8080:8080"
+    restart: always
+
+  sonarqube:
+    image: sonarqube
+    ports:
+      - "9000:9000"
